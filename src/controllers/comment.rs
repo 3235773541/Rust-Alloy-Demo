@@ -10,12 +10,14 @@ use crate::models::_entities::comments::{ActiveModel, Entity, Model};
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Params {
     pub content: Option<String>,
-    }
+    pub article_id: i32, // <- add this
+}
 
 impl Params {
     fn update(&self, item: &mut ActiveModel) {
-      item.content = Set(self.content.clone());
-      }
+        item.content = Set(self.content.clone());
+        item.article_id = Set(self.article_id.clone()); // <- add this
+    }
 }
 
 async fn load_item(ctx: &AppContext, id: i32) -> Result<Model> {

@@ -2,7 +2,10 @@
 use loco_rs::prelude::*;
 use serde::{Deserialize, Serialize};
 
-use crate::models::_entities::articles::{ActiveModel, Entity, Model};
+use crate::models::_entities::{
+    articles::{ActiveModel, Entity, Model},
+    comments,
+};
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Params {
@@ -57,6 +60,16 @@ pub async fn get_one(Path(id): Path<i32>, State(ctx): State<AppContext>) -> Resu
     format::json(load_item(&ctx, id).await?)
 }
 
+
+pub async fn comments(
+    Path(id): Path<i32>,
+    State(ctx): State<AppContext>,
+) -> Result<Response> {
+    let item = load_item(&ctx, id).await?;
+    let comments = item.find_related(comments::Entity).all(&ctx.db).await?;
+    format::json(comments)
+}
+
 pub fn routes() -> Routes {
     Routes::new()
         .prefix("articles")
@@ -65,4 +78,5 @@ pub fn routes() -> Routes {
         .add("/:id", get(get_one))
         .add("/:id", delete(remove))
         .add("/:id", post(update))
+        .add("/:id/comments", get(comments))
 }
