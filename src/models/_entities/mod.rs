@@ -2,6 +2,7 @@
 
 pub mod prelude;
 
+pub mod articles;
 pub mod notes;
 pub mod posts;
 pub mod users;
