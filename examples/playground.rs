@@ -1,21 +1,23 @@
-#[allow(unused_imports)]
+// located in examples/playground.rs
+// use this file to experiment with stuff
 use loco_rs::{cli::playground, prelude::*};
-use myapp::app::App;
+// to refer to articles::ActiveModel, your imports should look like this:
+use myapp::{app::App, models::_entities::articles};
 
 #[tokio::main]
 async fn main() -> loco_rs::Result<()> {
-    let _ctx = playground::<App>().await?;
+    let ctx = playground::<App>().await?;
 
-    // let active_model: articles::ActiveModel = ActiveModel {
-    //     title: Set(Some("how to build apps in 3 steps".to_string())),
-    //     content: Set(Some("use Loco: https://loco.rs".to_string())),
-    //     ..Default::default()
-    // };
-    // active_model.insert(&ctx.db).await.unwrap();
+    // add this:
+    let active_model: articles::ActiveModel = articles::ActiveModel {
+        title: Set(Some("how to build apps in 3 steps".to_string())),
+        content: Set(Some("use Loco: https://loco.rs".to_string())),
+        ..Default::default()
+    };
+    active_model.insert(&ctx.db).await.unwrap();
 
-    // let res = articles::Entity::find().all(&ctx.db).await.unwrap();
-    // println!("{:?}", res);
-    println!("welcome to playground. edit me at `examples/playground.rs`");
+    let res = articles::Entity::find().all(&ctx.db).await.unwrap();
+    println!("{:?}", res);
 
     Ok(())
 }
