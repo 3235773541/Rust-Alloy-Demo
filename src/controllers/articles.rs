@@ -1,22 +1,13 @@
 #![allow(clippy::unused_async)]
 use loco_rs::prelude::*;
-use axum::debug_handler;
 
+use crate::models::_entities::articles;
 
-#[debug_handler]
-pub async fn echo(req_body: String) -> String {
-    req_body
-}
-
-#[debug_handler]
-pub async fn hello(State(_ctx): State<AppContext>) -> Result<Response> {
-    // do something with context (database, etc)
-    format::text("hello")
+pub async fn list(State(ctx): State<AppContext>) -> Result<Response> {
+    let res = articles::Entity::find().all(&ctx.db).await?;
+    format::json(res)
 }
 
 pub fn routes() -> Routes {
-    Routes::new()
-        .prefix("articles")
-        .add("/", get(hello))
-        .add("/echo", post(echo))
+    Routes::new().prefix("articles").add("/", get(list))
 }
