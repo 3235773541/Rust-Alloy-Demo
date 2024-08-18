@@ -7,6 +7,7 @@ mod m20231103_114510_notes;
 
 mod m20240816_164517_posts;
 mod m20240818_120933_articles;
+mod m20240818_172845_comments;
 pub struct Migrator;
 
 #[async_trait::async_trait]
@@ -17,6 +18,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20231103_114510_notes::Migration),
             Box::new(m20240816_164517_posts::Migration),
             Box::new(m20240818_120933_articles::Migration),
+            Box::new(m20240818_172845_comments::Migration),
         ]
     }
 }

@@ -50,6 +50,7 @@ impl Hooks for App {
 
     fn routes(_ctx: &AppContext) -> AppRoutes {
         AppRoutes::with_default_routes()
+            .add_route(controllers::comment::routes())
             .add_route(controllers::articles::routes())
             .add_route(controllers::guide::routes())
             .add_route(controllers::post::routes())
