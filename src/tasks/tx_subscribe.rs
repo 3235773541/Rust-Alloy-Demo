@@ -4,6 +4,7 @@ use web3::transports::WebSocket;
 use web3::Web3;
 use std::{env, process};
 use std::env::VarError;
+use dotenv::dotenv;
 pub struct TxSubscribe;
 
 fn get_node_endpoint() -> Result<String, VarError> {
@@ -19,8 +20,9 @@ impl Task for TxSubscribe {
         }
     }
 
-    async fn run(&self, app_context: &AppContext, _vars: &loco_rs::task::Vars) -> Result<()> {
+    async fn run(&self, _app_context: &AppContext, _vars: &loco_rs::task::Vars) -> Result<()> {
         println!("Starting the task");
+        dotenv().ok();
         let wss_node_endpoint = match get_node_endpoint() {
             Ok(r) => r,
             Err(e) => {
