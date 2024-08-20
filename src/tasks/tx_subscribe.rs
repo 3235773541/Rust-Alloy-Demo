@@ -30,6 +30,7 @@ impl Task for TxSubscribe {
                 process::exit(1);
             }
         };
+        println!("Connecting to {}", wss_node_endpoint);
         let websocket =
             WebSocket::new(wss_node_endpoint.as_str())
                 .await
