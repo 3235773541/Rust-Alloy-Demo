@@ -64,6 +64,7 @@ impl Hooks for App {
     }
 
     fn register_tasks(tasks: &mut Tasks) {
+        tasks.register(tasks::alloy_subscribe::AlloySubscribe);
         tasks.register(tasks::contract::Contract);
         tasks.register(tasks::tx_subscribe::TxSubscribe);
         tasks.register(tasks::user_report::UserReport);

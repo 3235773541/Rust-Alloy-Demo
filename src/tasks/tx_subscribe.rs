@@ -31,10 +31,15 @@ impl Task for TxSubscribe {
             }
         };
         println!("Connecting to {}", wss_node_endpoint);
+        // let proxy = Proxy::all("http://your-proxy-url:port")?;
+        // let proxy_client = reqwest::Client::builder()
+        //     .proxy(proxy)
+        //     .build()?;
         let websocket =
             WebSocket::new(wss_node_endpoint.as_str())
                 .await
                 .map_err(|e| Error::Message(e.to_string()))?;
+        
         let web3 = Web3::new(websocket);
         let mut sub = web3
             .eth_subscribe()

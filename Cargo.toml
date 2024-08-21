@@ -40,6 +40,10 @@ futures = "0.3.30"
 hex = "0.4.3"
 alloy = { version = "0.2.1", features = ["full","node-bindings"] }
 dotenv = "0.15.0"
+tokio-tungstenite = "0.23.1"
+futures-util = "0.3.30"
+url = "2.5.2"
+tokio-socks = "0.5.2"
 # /view engine
 
 [[bin]]
