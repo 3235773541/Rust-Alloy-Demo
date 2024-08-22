@@ -38,12 +38,26 @@ unic-langid = "0.9.4"
 web3 = "0.19.0"
 futures = "0.3.30"
 hex = "0.4.3"
-alloy = { version = "0.2.1", features = ["full","node-bindings"] }
+alloy = { version = "0.2.1", features = [
+    "full",
+    "node-bindings",
+    "rpc-types-debug",
+    "rpc-types-trace",
+    "json-rpc",
+    "rpc-client",
+    "signer-aws",
+    "signer-keystore",
+    "signer-ledger",
+    "signer-mnemonic",
+    "signer-trezor",
+    "signer-yubihsm",
+] }
 dotenv = "0.15.0"
 tokio-tungstenite = "0.23.1"
 futures-util = "0.3.30"
 url = "2.5.2"
 tokio-socks = "0.5.2"
+alloy-sol-types = "0.8.0"
 # /view engine
 
 [[bin]]
