@@ -88,14 +88,14 @@ server:
     #   fallback: "assets/static/404.html"
 
     # client side app static config
-    static:
-      enable: true
-      must_exist: true
-      precompressed: false
-      folder:
-        uri: "/"
-        path: "frontend/dist"
-      fallback: "frontend/dist/index.html"
+    # static:
+    #   enable: true
+    #   must_exist: true
+    #   precompressed: false
+    #   folder:
+    #     uri: "/"
+    #     path: "frontend/dist"
+    #   fallback: "frontend/dist/index.html"
 
 # Worker Configuration
 workers:
