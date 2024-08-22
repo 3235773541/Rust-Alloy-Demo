@@ -1,53 +1,85 @@
-# Welcome to Loco :train:
+## Rust---Loco---Alloy入门学习
+Rust、Loco和Alloy的入门学习项目，主要学习Loco框架的使用和web3-rust相关库的使用。
 
-Loco is a web and API framework running on Rust.
+#### 参考文档
+https://course.rs/
 
-This is the **SaaS starter** which includes a `User` model and authentication based on JWT.
+https://loco.rs/docs/getting-started/guide/
+
+https://alloy.rs/
+
+#### 关于commit：
+前十个commit是loco的入门学习，主要由loco命令生成，后面的六commit是Alloy的入门学习，涉及合约调用，链上交易订阅，和交易数据解析。
+
+#### 运行：
+1. 安装rust，loco和相关依赖
 
 
-## Quick Start
-
-You need:
-
-* A local postgres instance
-* A local Redis instance
-
-Check out your development [configuration](config/development.yaml).
-
-> To configure a database , please run a local postgres database with <code>loco:loco</code> and a db named <code>[app name]_development.</code>: 
-<code>docker run -d -p 5432:5432 -e POSTGRES_USER=loco -e POSTGRES_DB=[app name]_development -e POSTGRES_PASSWORD="loco" postgres:15.3-alpine</code>
-
-Now start your app:
-
-```
-$ cargo loco start
-Finished dev [unoptimized + debuginfo] target(s) in 21.63s
-    Running `target/debug/myapp start`
-
-    :
-    :
-    :
-
-controller/app_routes.rs:203: [Middleware] Adding log trace id
-
-                      ▄     ▀
-                                 ▀  ▄
-                  ▄       ▀     ▄  ▄ ▄▀
-                                    ▄ ▀▄▄
-                        ▄     ▀    ▀  ▀▄▀█▄
-                                          ▀█▄
-▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄▄▄ ▀▀█
- ██████  █████   ███ █████   ███ █████   ███ ▀█
- ██████  █████   ███ █████   ▀▀▀ █████   ███ ▄█▄
- ██████  █████   ███ █████       █████   ███ ████▄
- ██████  █████   ███ █████   ▄▄▄ █████   ███ █████
- ██████  █████   ███  ████   ███ █████   ███ ████▀
-   ▀▀▀██▄ ▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀ ██▀
-       ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
-
-started on port 5150
+2. docker 启动数据库依赖
+```shell
+docker run -d -p 5432:5432 \
+  -e POSTGRES_USER=loco \
+  -e POSTGRES_DB=myapp_development \
+  -e POSTGRES_PASSWORD="loco" \
+  postgres:15.3-alpine
 ```
 
-## Getting help
+```
+docker run -p 6379:6379 -d redis redis-server
+```
 
-Check out [a quick tour](https://loco.rs/docs/getting-started/tour/) or [the complete guide](https://loco.rs/docs/getting-started/guide/).
+3. 配置.env文件, 参考.env.example
+⚠️这里必须Alchemy的API_KEY，订阅交易时使用的是 `alchemy_pendingTransactions`
+
+
+
+3. 启动loco
+```
+cargo loco start
+```
+
+```
+$ curl localhost:5150/guide
+hello
+```
+5. loco的其他命令
+```shell
+$ curl -X POST -H "Content-Type: application/json" -d '{
+  "title": "Your Title",
+  "content": "Your Content xxx"
+}' localhost:5150/articles
+{"created_at":"...","updated_at":"...","id":2,"title":"Your Title","content":"Your Content xxx"}
+```
+
+```shell
+$ curl localhost:5150/articles
+[{"created_at":"...","updated_at":"...","id":1,"title":"how to build apps in 3 steps","content":"use Loco: https://loco.rs"},{"created_at":"...","updated_at":"...","id":2,"title":"Your Title","content":"Your Content xxx"}
+
+```
+6. 测试订阅功能
+
+使用`web3-rs`库的封装，订阅交易
+```shell
+cargo loco task tx_subscribe
+```
+
+7. 测试合约调用
+使用`alloy-rs`库的封装，调用合约
+```shell
+cargo loco task Contract
+```
+
+8. 测试交易订阅以及数据解析
+使用`tokio_tungstenite`库订阅交易，使用`alloy`解析数据
+会打印 uniswap的 `UniversalRouter`的 `execute` 交易的信息
+```shell
+cargo loco task alloy_subscribe
+```
+
+
+#### 遇到的一些问题：
+1. web3-rs, ehters-rs 库被标注已经deprecated，目前alloy-rs文档相对全面
+
+
+#### TODO：
+- [ ] 1. 对于input的解析，应该有简洁的直接通过abi解析任意调用函数的方法，而不用对单个函数进行分类
